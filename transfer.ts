@@ -1,8 +1,9 @@
 import { Transaction, SystemProgram, Connection, Keypair, LAMPORTS_PER_SOL, sendAndConfirmTransaction, PublicKey } from "@solana/web3.js";
-
 import wallet from "./dev-wallet.json";
+
 // Import our dev wallet keypair from the wallet file
 const from = Keypair.fromSecretKey(new Uint8Array(wallet));
+
 // Define our Turbin3 public key
 const to = new PublicKey("6c4LWWtKYGd2Bz37XX9CgKMmLa5AeJekYexo1Wr96Twa");
 
@@ -23,8 +24,7 @@ const connection = new Connection("https://api.devnet.solana.com");
         );
         transaction.recentBlockhash = (await connection.getLatestBlockhash('confirmed')).blockhash;
         transaction.feePayer = from.publicKey;
-        // Calculate exact fee rate to transfer entire SOL amount out
-        //of account minus fees
+        // Calculate exact fee rate to transfer entire SOL amount out of account minus fees
         const fee = (await connection.getFeeForMessage(transaction.compileMessage(),'confirmed')).value || 0;
         // Remove our transfer instruction to replace it
         transaction.instructions.pop();
